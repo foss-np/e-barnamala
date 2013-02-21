@@ -1,0 +1,23 @@
+Todo List:
+
+	Lessons
+		| Lesson on domestic and wild animals
+		| Lesson on Matra
+		| Lesson on colors and shapes
+		| Lesson on numbers above 9 till 20
+
+	Activities
+		| Image word and word Image activities for traffic, animals
+		| Change time activities based on wxAnalogClock
+		| Fill on the missing sequence
+		| Add, substract activities under number
+	
+	Code Cleaning
+		| Write drag and drop code - lots of game to be made
+		| Assign color to a var in config and make it available to all
+		| Check to try larger image for Animals, birds and insects
+	
+	Other Expected Works
+		| Creation of an icon set for menu redesign
+		| Better quality font for eBarnamala
+		| Graphics for buttons, arrows

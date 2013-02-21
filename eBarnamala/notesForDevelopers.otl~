@@ -1,0 +1,52 @@
+Notes:
+	Regarding the use of pil for image reduction
+		| Pure wx based image reduction function
+		| def resizeImage0(imageList, resizePercent):
+		|     print imageList
+		|     newImageList = []
+		| 	  for i in imageList:        
+		|         temp = wx.Bitmap(i, wx.BITMAP_TYPE_PNG)
+		|         w, h = temp.GetWidth(), temp.GetHeight()
+		|         temp = temp.ConvertToImage()
+		|         w, h = (resizePercent*w)/100, (resizePercent*h)/100
+		|         newImageList.append(temp.Rescale(w, h, wx.IMAGE_QUALITY_NORMAL))
+		|     return newImageList
+		|Though this function gives better result than PIL function, it does not work properly under wxPython 2.8.8.1. The underlying c++ library gives some errors like incorrect bitmap
+		| PIL based image reduction function
+		| def resizeImage(imageList, resizePercent):
+		| newImageList = []
+		| for i in imageList:
+		|	temp = Image.open(i)
+		|	temp = temp.resize(((resizePercent*temp.size[0])/100,(resizePercent*temp.size[1])/100))
+		|	returnNumberImg = wx.EmptyImage(temp.size[0], temp.size[1])
+		|	returnNumberImg.SetData(temp.convert('RGB').tostring())
+		|	returnNumberImg.SetAlphaData(temp.convert("RGBA").tostring()[3::4])
+		|	newImageList.append(returnNumberImg)
+		| return newImageList
+		| Though this function works in both Win and Linux with a charm, the quality of the image is not very good. Have to look at the PIL documentation and check what can be done.
+		| OK, OK, OK... seems to have solved this problem. So will use PIL completely for now. 
+		| Change:::
+		|	temp = temp.resize(((resizePercent*temp.size[0])/100,(resizePercent*temp.size[1])/100))
+		|	temp = temp.resize(((resizePercent*temp.size[0])/100,(resizePercent*temp.size[1])/100), Image.ANTIALIAS) or filters of choice
+		| Later I would like to change back to pure wxPython version though to reduce the number of libraries used.
+	Regarding the use of wx.GenStaticBitmap instead of StaticBitmap
+		| StaticBitmap is very basic. It will take events like mouseDown or LEFT_BUTTON under windows, but not under Linux. But using a top-level window with GenStaticBitmap takes care of the problem. GenStaticBitmap is part of wx.lib.statbmp. Under windows when GenStaticBitmap is used there is no or problematic response to SetBackgroundColour function. Best to have choice for Windows and Linux.
+	Regarding the naming of directories
+		| the case of the names of the directories have to be maintained to the one that is used in the conf.config file. Otherwise there is problem with directory resolution in Linux. Had a major bug tracking session for the learnAnimals section and realized later that cases were different. Wasted time for no use.
+	Regarding the generation of images for numbers above 9
+		| when first running this lesson on windows (checked with winxp), there is a certain time lapse before the images are generated. This is due to function being called for the first time and generating image on the fly for the first time. To reduce this time lapse, need to search for a way to generate these and similar images before hand and buffer them. So later only images from the buffer will be called and we dont need to go through the generation process.
+	Known Bugs --- to be elemenated later
+		| In memoryImageChar module when two images are being displayed and if they match each other, then they are kept on the screen for 1 second before they are removed. While they are being displayed if one of the images gets a mouse event then an error occurs. Need to look at blocking all activities while that 1 second is taking place or need to reduce the time for which it is displayed.
+		| Using Aalekh font there is a problem to use double && for the number 7 as single & is the bitwise AND operator. If using && then in Linux two 77s are printed, but in winxp it is allright. If changed to one & then problem in Windows alright on Linux. So a code block:
+		| if wx.Platform == "__WXGTK__":
+		| 	if len(question) > 1:
+		| 		question = question[0]
+		| 	for i in range(len(answerList)):
+		| 		if len(answerList[i]) > 1:
+		| 			answerList[i] = answerList[i][0]
+		| else:
+		| 	pass
+		| The above code changes two &&s to one & in the charMatch module if the platform is Linux, gtk library.
+	Colour Issues
+		| The representation of colours in winxp and linux seems to give different rendition to different colours except for a set of colours. I have tested with a few colours and below is the list that works fine for both platforms:
+		| WHITE, LIGHTGREY, PINK, YELLOW, RED, GREEN, BLACK

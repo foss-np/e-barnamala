@@ -1,0 +1,14 @@
+# -*- coding: utf-8 -*-
+import conf.loadDataAnimals as loadData
+
+
+dataObject = loadData.animalNameNepali
+###For data in list
+for i in dataObject:
+    print i
+
+###For data in dictionary
+##for i in dataObject:
+##    for j in dataObject[i].values():
+##        print j
+    

@@ -1,0 +1,18 @@
+About:
+eBarnamala is written for the primary purpose of learning Nepali in a self paced style. So it should go very well for child learning as well as adult learning. I have tried to add lessons and activities that helps one use Nepali on a day to day basis rather than looked as the complexities of it.
+
+License: Under GPLv2
+This software is free to everyone for educational purposes. 
+
+Installation:
+For Windows:
+Use the downloaded installer to install.
+For Linux:
+Python uses the following bindings:
+	-- wxPython
+	-- PIL
+Download and install these two packages using the synatic Package Manager or any other package managers. Then create a .fonts directory in your home directory. Copy the two fonts from the fonts directory within the eBarnamala directory.
+
+Usage:
+For Windows just click on the desktop icon or eBarnamala menu from start menu. 
+For linux call python eBarnamala.py from the command line while in the eBarnamala folder.
